@@ -1,12 +1,10 @@
 const covid19ImpactEstimator = (data) => {
-  const { reportedCases, periodType } = data;
+  const currentlyInfectedForImpact = data.reportedCases * 10;
+  const currentlyInfectedForSevereImpact = data.reportedCases * 50;
 
-  const currentlyInfectedForImpact = reportedCases * 10;
-  const currentlyInfectedForSevereImpact = reportedCases * 50;
-
-  if (periodType === 'weeks') {
+  if (data.periodType === 'weeks') {
     data.timeToElapse *= 7;
-  } else if (periodType === 'months') {
+  } else if (data.periodType === 'months') {
     data.timeToElapse *= 30;
   }
   const factor = Math.trunc(data.timeToElapse) / 3;
