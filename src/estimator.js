@@ -1,19 +1,19 @@
 const covid19ImpactEstimator = (data) => {
-  const { periodType, reportedCases } = data;
+  const reportedCases = data;
 
   const currentlyInfected = reportedCases * 10;
 
-  const projectedInfection = () => {
+  const projectedInfection = (periodType, timeToElapse) => {
     let currentInfectionsByRequestedTime;
     switch (periodType) {
       case 'Days':
-        currentInfectionsByRequestedTime = Math.floor((currentlyInfected * 512) / 3);
+        currentInfectionsByRequestedTime = Math.floor((timeToElapse * 512) / 3);
         break;
       case 'weeks':
-        currentInfectionsByRequestedTime = Math.floor((currentlyInfected * 512) / 7);
+        currentInfectionsByRequestedTime = Math.floor((timeToElapse * 512) / 7);
         break;
       case 'months':
-        currentInfectionsByRequestedTime = Math.floor((currentlyInfected * 1024) / 30);
+        currentInfectionsByRequestedTime = Math.floor((timeToElapse * 1024) / 30);
         break;
 
       default:
@@ -26,14 +26,14 @@ const covid19ImpactEstimator = (data) => {
   // const infectionsByRequestedTime = projectedInfection();
 
   return {
-    data,
+    data: reportedCases,
     impact: {
       currentlyInfected: reportedCases * 10,
-      infectionsByRequestedTime: projectedInfection
+      infectionsByRequestedTime: projectedInfection * currentlyInfected
     },
     severeImpact: {
       currentlyInfected: reportedCases * 50,
-      infectionsByRequestedTime: projectedInfection
+      infectionsByRequestedTime: projectedInfection * currentlyInfected
     }
   };
 };
