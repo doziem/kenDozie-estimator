@@ -1,25 +1,19 @@
 const covid19ImpactEstimator = (data) => {
-  const reportedCases = data;
+  const { reportedCases, timeToElapse, periodType } = data;
 
   const currentlyInfected = reportedCases * 10;
-
-  const projectedInfection = (periodType, timeToElapse) => {
+  const projectedInfection = () => {
     let currentInfectionsByRequestedTime;
-    switch (periodType) {
-      case 'Days':
-        currentInfectionsByRequestedTime = Math.floor((timeToElapse * 512) / 3);
-        break;
-      case 'weeks':
-        currentInfectionsByRequestedTime = Math.floor((timeToElapse * 512) / 7);
-        break;
-      case 'months':
-        currentInfectionsByRequestedTime = Math.floor((timeToElapse * 1024) / 30);
-        break;
 
-      default:
-        currentInfectionsByRequestedTime = null;
+    if (periodType === 'months') {
+      // eslint-disable-next-line no-undef
+      currentlyInfectionsByRequestedTime = Math.floor(timeToElapse * 30) / 3;
     }
 
+    if (periodType === 'weeks') {
+      // eslint-disable-next-line no-undef
+      currentlyInfectionsByRequestedTime = Math.floor(timeToElapse * 7) / 3;
+    }
     return currentInfectionsByRequestedTime;
   };
 
