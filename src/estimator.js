@@ -1,35 +1,33 @@
 const covid19ImpactEstimator = (data) => {
-  const { reportedCases, timeToElapse, periodType } = data;
+    const { reportedCases, timeToElapse, periodType } = data;
 
-  const currentlyInfected = reportedCases * 10;
-  const projectedInfection = () => {
-    let currentInfectionsByRequestedTime;
+    const currentlyInfectedForImpact = reportedCases * 10;
+    const currentlyInfectedForSevereImpact = reportedCases * 50;
 
-    if (periodType === 'months') {
-      // eslint-disable-next-line no-undef
-      currentlyInfectionsByRequestedTime = Math.floor(timeToElapse * 30) / 3;
+    switch (periodType) {
+        case 'weeks':
+            timeToElapse *= 7;
+            break;
+        case 'months':
+            timeToElapse *= 7;
+            break;
     }
 
-    if (periodType === 'weeks') {
-      // eslint-disable-next-line no-undef
-      currentlyInfectionsByRequestedTime = Math.floor(timeToElapse * 7) / 3;
-    }
-    return currentInfectionsByRequestedTime;
-  };
+    const factor = Math.trunc(timeToElapse) / 3;
+    const infectionsByRequestedTimeForImpact = currentlyInfectedForImpact * (2 ** factor);
+    const infectionsByRequestedTimeForSevereImpact = currentlyInfectedForSevereImpact * (2 ** factor);
 
-  // const infectionsByRequestedTime = projectedInfection();
-
-  return {
-    data: reportedCases,
-    impact: {
-      currentlyInfected: reportedCases * 10,
-      infectionsByRequestedTime: projectedInfection * currentlyInfected
-    },
-    severeImpact: {
-      currentlyInfected: reportedCases * 50,
-      infectionsByRequestedTime: projectedInfection * currentlyInfected
-    }
-  };
+    return {
+        data,
+        impact: {
+            currentlyInfected: currentlyInfectedForImpact,
+            infectionsByRequestedTime: infectionsByRequestedTimeForImpact
+        },
+        severeImpact: {
+            currentlyInfected: currentlyInfectedForSevereImpact,
+            infectionsByRequestedTime: infectionsByRequestedTimeForSevereImpact
+        }
+    };
 };
 
 export default covid19ImpactEstimator;
