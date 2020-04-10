@@ -26,11 +26,11 @@ const covid19ImpactEstimator = (data) => {
   const casesForVentilatorsImpact = 0.02 * infectionsByRequestedTimeForImpact;
   const casesForVentilatorsSevereImpact = 0.02 * infectionsByRequestedTimeForSevereImpact;
 
-  const income = data.region.avgDailyIncomeInUSD;
-  const population = data.region.avgDailyIncomePopulation;
+  const inc = data.region.avgDailyIncomeInUSD;
+  const pop = data.region.avgDailyIncomePopulation;
 
-  const dollarImpact = (infectionsByRequestedTimeForImpact * population * income * days).toFixed(2);
-  const dollar = (infectionsByRequestedTimeForSevereImpact * population * income * days).toFixed(2);
+  const dollarImpact = ((infectionsByRequestedTimeForImpact * pop) * inc * days).toFixed(2);
+  const dollar = ((infectionsByRequestedTimeForSevereImpact * pop) * inc * days).toFixed(2);
   return {
     data,
     impact: {
